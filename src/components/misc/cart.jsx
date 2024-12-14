@@ -96,7 +96,7 @@ useEffect(() => {
         <Button color="gray" onClick={() => props.setOpenModal(false)}>
         Hide
       </Button>
-        {props.udata.user&&props.udata.user?  <Button onClick={() => {props.setOpenModal(false);navigate("/checkout")}}> Checkout</Button> :
+        {props.udata&&props.udata.user&&props.udata.user?  <Button onClick={() => {props.setOpenModal(false);navigate("/checkout")}}> Checkout</Button> :
          <Button onClick={() => {props.setOpenModal(false);navigate("/login")}}> Sign in to complete checkout</Button>}
         </div>
 

@@ -6,6 +6,7 @@ import { Spinner } from 'flowbite-react';
 import { API_URL, ROOT_API } from '../../utils';
 import { useRef } from 'react';
 import useValidation from './misc/useValidation';
+import Paginate from './misc/paginate';
 import Category from './misc/category';
 import Product from './misc/product';
 function Home() {
@@ -36,21 +37,30 @@ function Home() {
 
       
     // }
-  }, [])
+  }, []);
+
+
+
+  const handleSetUrl = (url)=>{
+console.log(url);
+getProducts(null,url);
+  }
   
 
 
-  const getProducts = async (cid)=>{
+  const getProducts = async (cid,url)=>{
     setErr(null);
     setLoading(true);
 
+
+    console.log("url",url)
     try {
-  const response = axios.get(`${API_URL}/products/${cid?cid:0}`);
+  const response =  axios.get(url?`${url}&cid=${cid?cid:0}`:`${API_URL}/products?cid=${cid?cid:0}`);
     const data = await response;
     if(data.status==200){
       console.log(data)
-      setProducts(data.data.products);
-      setCategories(data.data.categories.data)
+     setProducts(data.data.products);
+    setCategories(data.data.categories.data)
   
     }
     
@@ -103,11 +113,14 @@ function Home() {
         ))}
         
         </div>
+
+        <Paginate setUrl={(url)=>{handleSetUrl(url)}} data={products.links} />
         </div>
       }
 
 
 
+    
     </div>
   )
 }

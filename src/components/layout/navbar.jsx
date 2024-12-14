@@ -95,7 +95,7 @@ const dispatch = useDispatch();
       </div>
 
 
-      {udata.user?<div className='flex flex-row-reverse items-center  gap-x-2' >
+      {udata&&udata.user?<div className='flex flex-row-reverse items-center  gap-x-2' >
       
    
      

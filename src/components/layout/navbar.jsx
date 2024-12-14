@@ -57,6 +57,7 @@ const dispatch = useDispatch();
       
      }else{
       toast.error("Something went wrong!");
+      navigate("/login")
      }
   
   
@@ -147,7 +148,7 @@ const dispatch = useDispatch();
  
 
     
-      </div>:<div >
+      </div>:<div className=' flex gap-3 flex-col sm:flex-col md:flex-row lg:flex-row  xl:flex-row' >
         <Link className='navtab' to={'/login'}> login</Link>
         <Link className='navtab' to={'/register'}> register</Link>
       </div>  }

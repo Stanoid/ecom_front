@@ -6,11 +6,11 @@
 
 
 .navtab{
-  @apply text-white mx-2 bg-blue-950 px-4 py-2 shadow-md rounded-md
+  @apply text-white  bg-blue-950 px-4 py-2 shadow-md rounded-md
 }
 
 input,textarea{
-  @apply p-2 w-full mt-1 border-blue-400 border-2 rounded-md
+  @apply p-2 w-full mt-1  border-blue-400 border-2 rounded-md
 }
 
 form>button{

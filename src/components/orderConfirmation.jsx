@@ -147,7 +147,15 @@ ${item.price}
 </td>
 
 <td className="px-6 py-4">
-<img src={`${ROOT_API}/storage/${JSON.parse(item.product.img)[0]}`} className=' w-16 rounded-md shadow-md ' alt="" />
+<img
+
+src={
+  JSON.parse(item.product.img)[0].includes("https")?JSON.parse(item.product.img)[0]
+  :`${ROOT_API}/storage/${JSON.parse(item.product.img)[0]}
+  `}
+
+
+className=' w-16 rounded-md shadow-md ' alt="" />
 </td>
 </tr>
 

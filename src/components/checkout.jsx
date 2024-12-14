@@ -129,7 +129,17 @@ ${product.data.price}
 </td>
 
 <td className="px-6 py-4">
-<img src={`${ROOT_API}/storage/${product.img}`} className=' w-16 rounded-md shadow-md ' alt="" />
+<img 
+
+
+
+src={
+  product.img.includes("https")?product.img
+  :`${ROOT_API}/storage/${product.img}
+  `}
+
+
+className=' w-16 rounded-md shadow-md ' alt="" />
 </td>
 </tr>
 

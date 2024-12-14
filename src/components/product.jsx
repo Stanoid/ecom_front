@@ -7,6 +7,7 @@ import { addToCart,removeFromCart } from '../lib/actions/cartActions';
 import { Spinner } from 'flowbite-react';
 import { useDispatch,useSelector } from 'react-redux';
 import useValidation from './misc/useValidation';
+import { motion } from 'framer-motion';
 import { useSearchParams } from 'react-router-dom';
 import Product from './misc/product';
 function ProductDetails() {
@@ -134,31 +135,62 @@ function ProductDetails() {
 
   </div>:
 <>
-<div className='flex flex-col flex-1 items-center justify-center gap-y-4'  >
+<motion.div
+
+initial={{ opacity: 0, y: 50 }} 
+animate={{ opacity: 1, y: 0 }} 
+transition={{ duration: 0.5 }} 
+
+
+className='flex flex-col flex-1 items-center justify-center gap-y-4'  >
 
 <div className=' flex justify-center items-center ' >
-  <img src={`${ROOT_API}/storage/${images&&images[ind]}`} className='w-1/2 rounded-md shadow-md ' alt="" />
+  <img
+  src={
+    images&&images[ind].includes("https")?images&&images[ind]
+    :`${ROOT_API}/storage/${images&&images[ind]}
+    `}
+   className='w-1/2 rounded-md shadow-md ' alt="" />
 </div>
 
 <div className='flex gap-x-4 ' >
 {images&&images.map((img,index)=>(
-<img    onClick={()=>{setInd(index)}}  key={index} className={`${index==ind? 'border-4'  : 'border-0' } border-blue-500 shadow-md rounded-md  h-12 `}   src={`${ROOT_API}/storage/${img}`} />
+<img    onClick={()=>{setInd(index)}} 
+ key={index} className={`${index==ind? 'border-4'  : 'border-0' } border-blue-500 shadow-md rounded-md 
+  h-12 `}  
+  src={
+    img.includes("https")?img
+    :`${ROOT_API}/storage/${img}
+    `}
+  />
 
 ))}</div>
-</div>
+</motion.div>
 
-<div className='flex-1' >
+<motion.div
+
+initial={{ opacity: 0, x: -50 }} 
+animate={{ opacity: 1, x: 0 }} 
+transition={{ duration: 0.5 }} 
+
+
+className='flex-1' >
 
 <div className='text-3xl  font-bold' > {product&&product.name} </div>
 <p className='font-bold text-xl' > {product&&product.description} </p>
-<div> Price: {product&&product.price} </div>
-<div> Stock: {product&&product.stock} </div>
+<div className='text-3xl mt-4 text-blue-600 font-bold' > Price: ${product&&product.price} </div>
+<div className='text-xl text-blue-600 font-bold' > Stock: {product&&product.stock} </div>
 
-      <div className='w-full xl:w-40 lg:w-40 md:w-40 ' >
-      <button className='cbtn' onClick={()=>{handleAddToCart()}}  > Add to cart </button>
-      </div>
+<motion.div
+    whileHover={{ scale: 1.03 }}
+    whileTap={{ scale: 0.9 }}
+    transition={{ type: "spring", stiffness: 400, damping: 17 }}
+      
+      className='w-full xl:w-40 lg:w-40 md:w-40 ' >
+      <button className='cbtn bg-blue-700 ' onClick={()=>{handleAddToCart()}}  > Add to cart </button>
+      </motion.div>
 
-</div>
+</motion.div>
 </>
 }
 

@@ -6,6 +6,7 @@ import { Spinner } from 'flowbite-react';
 import { API_URL, ROOT_API } from '../../utils';
 import { useRef } from 'react';
 import useValidation from './misc/useValidation';
+import { motion } from 'framer-motion';
 import Paginate from './misc/paginate';
 import Category from './misc/category';
 import Product from './misc/product';
@@ -25,7 +26,8 @@ function Home() {
 
     if (firstRenderRef.current) {
       firstRenderRef.current = false;
-      getProducts()
+      getProducts();
+      getcategories();
     } else {
       setRefr(false);        
     }
@@ -48,6 +50,32 @@ getProducts(null,url);
   
 
 
+  const getcategories = async ()=>{
+    setErr(null);
+    setLoading(true);
+    try {
+  const response =  axios.get(`${API_URL}/categories`);
+    const data = await response;
+    if(data.status==200){
+      console.log(data.data.data.data)
+    
+   setCategories(data.data.data.data)
+  
+    }
+    
+    setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      if(error?.response?.status==422){
+        setErr(error.response.data.errors);
+         console.log(err)  
+      } 
+      console.log(error);
+    }
+
+    }
+
+
   const getProducts = async (cid,url)=>{
     setErr(null);
     setLoading(true);
@@ -59,9 +87,7 @@ getProducts(null,url);
     const data = await response;
     if(data.status==200){
       console.log(data)
-     setProducts(data.data.products);
-    setCategories(data.data.categories.data)
-  
+     setProducts(data.data.products);  
     }
     
     setLoading(false);
@@ -88,23 +114,29 @@ getProducts(null,url);
   return (
     <div>
 
+<div className=' flex overflow-x-scroll  gap-x-2  px-2 shadow-lg bg-blue-950' >
+
+<Category setGID={(cid)=>{handleCatChange(cid)}} key={0} data={{id:0,name:"All"}}  />
+
+{categories&&categories.map(category=>(
+
+<Category  setGID={(cid)=>{handleCatChange(cid)}}  key={category.id} data={category}  />
+
+))}
+
+</div>
+
       {
         loding?<div className='w-full h-60 flex justify-center items-center' >
         <Spinner size='xl' />
         </div>:
         <div>
-          <div className=' flex overflow-x-scroll  gap-x-2  px-2 shadow-lg bg-blue-950' >
-
-          <Category setGID={(cid)=>{handleCatChange(cid)}} key={0} data={{id:0,name:"All"}}  />
-
-          {categories&&categories.map(category=>(
-        
-       <Category  setGID={(cid)=>{handleCatChange(cid)}}  key={category.id} data={category}  />
-        
-        ))}
          
-          </div>
-        <div className='grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 md:grid-cols-4 xl:grid-cols-5 gap-2 ' >
+        <motion.div
+        
+        initial={{ opacity: 0, y: 50 }} 
+        animate={{ opacity: 1, y: 0 }} 
+        className='grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 md:grid-cols-4 xl:grid-cols-5 gap-3 p-3 ' >
 
         {products.data&&products.data.map(product=>(
         
@@ -112,7 +144,7 @@ getProducts(null,url);
         
         ))}
         
-        </div>
+        </motion.div>
 
         <Paginate setUrl={(url)=>{handleSetUrl(url)}} data={products.links} />
         </div>

@@ -4,6 +4,7 @@ import { decrement,increment } from '../../lib/actions/cartActions';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { FaPlusCircle,FaMinusCircle } from 'react-icons/fa';
+import { toast } from 'react-toastify';
 import { Modal,Button } from 'flowbite-react';
 import { FaTrash } from 'react-icons/fa';
 function Cart(props) {
@@ -96,11 +97,21 @@ useEffect(() => {
         <Button color="gray" onClick={() => props.setOpenModal(false)}>
         Hide
       </Button>
-        {props.udata&&props.udata.user&&props.udata.user?  <Button onClick={() => {props.setOpenModal(false);navigate("/checkout")}}> Checkout</Button> :
+        {props.udata&&props.udata.user&&props.udata.user?  <Button onClick={() => {
+          if(props.data.length==0){ toast.warn("Empty cart, add products to continue");return }
+          props.setOpenModal(false);navigate("/checkout")}}> Checkout</Button> :
          <Button onClick={() => {props.setOpenModal(false);navigate("/login")}}> Sign in to complete checkout</Button>}
         </div>
 
       
+
+
+
+
+
+
+
+
 
       </div>
       

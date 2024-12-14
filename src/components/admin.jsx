@@ -1,7 +1,9 @@
 import axios from 'axios';
 import React, { useState,useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
+
 import { toast } from 'react-toastify';
+import { Spinner } from 'flowbite-react';
 import { API_URL, ROOT_API } from '../../utils';
 import { useCookies } from 'react-cookie';
 import useValidation from './misc/useValidation';
@@ -12,11 +14,12 @@ function Admin() {
   const [cookies, setCookie, removeCookie] = useCookies(['tkn']);
   const [name,setName]= useState("");
   const [email,setEmail]= useState(0);
+  const [categories,setcategories]= useState([]); 
   const [password,setPassword]= useState(0);
   const [category,setCategory]= useState(null);
   const [image,setImage]= useState(null);
   const [description,setDescription]=useState("");
-
+ 
   const [products,setProducts]= useState([]);
   const [err,setErr]=useState(null);
   const udata = useSelector((state) => state.root.auth.data&&state.root.auth.data)
@@ -28,7 +31,7 @@ function Admin() {
     
   
     return () => {
-      getProducts()
+getcategories();
     }
   }, [refr])
   
@@ -62,8 +65,10 @@ const response = await axios.post(`${API_URL}/products/add`,{price:password
     toast.success("Product added!");
     setName("");setPassword("");setCategory(null)
     setEmail("");setDescription("");setImage(null)
-
+setLoading(false)
    }else{
+    setLoading(false)
+
      toast.error("somthing went wrong!")
    }
 
@@ -83,29 +88,26 @@ const response = await axios.post(`${API_URL}/products/add`,{price:password
   }
 
 
-
-
-  const getProducts = async ()=>{
+  const getcategories = async ()=>{
     setErr(null);
     setLoading(true);
-
     try {
-  const response = axios.get(`${API_URL}/products`);
+  const response =  axios.get(`${API_URL}/categories`);
     const data = await response;
-    console.log(data.data.data.data)
-    setProducts(data.data.data.data)
-
-    } catch (error) {
-      setLoading(false);
-      if(error?.response?.status==422){
-        setErr(error.response.data.errors);
-         console.log(err)  
-      } 
-      console.log(error);
-    }
+    if(data.status==200){
+      console.log(data.data.data.data)
+    
+   setcategories(data.data.data.data)
   
     }
+    
+    setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
 
+    }
 
 
 
@@ -132,32 +134,45 @@ const response = await axios.post(`${API_URL}/products/add`,{price:password
       <textarea rows={5} value={description} onChange={(e)=>{setDescription(e.target.value)}}  type="text" name='name'  />
       {useValidation(err,'description')}
 
-  <label htmlFor="category">category</label>
-  <input value={category} onChange={(e)=>{setCategory(e.target.value)}} type="number" name='category'  />
-  {useValidation(err,'category')}
+
+<div className='flex justify-between' >
 
 
-  <label htmlFor="image">image</label>
+
+
+
+<div>
+  
+<label htmlFor="image">image</label>
   <input multiple onChange={(e)=>{setImage(e.target.files);console.log(e.target.files)}} type="file" name='image'  />
   {useValidation(err,'img')}
-  <button type='submit'>Add product</button>
+</div>
+
+
+  <div>
+    
+  <label htmlFor="category">category</label>
+
+<select  className='w-full' value={category} onChange={(e)=>{setCategory(e.target.value)}} id="category" name='category'>
+
+  {categories&&categories.map(category=>(
+      
+      <option value={category.id}>{category.name}</option>
+     
+      
+      ))}
+</select>
+{useValidation(err,'category')}
+  </div>
+</div>
+
+
+  <button type='submit'>
+    {loding? <div className='flex justify-center items-center' > <Spinner/> </div>:<span>   Add product </span>}
+  </button>
 </form>
 
-<div className='m-3' >
 
-{products&&products.map(product=>(
-
-
-<div className="my-3 flex justify-between bg-red-400 p-3 rounded-md"  key={product.id}>
-<div>{product.name}</div>
-<div>{product.price}</div>
-<img className='w-32' src={`${ROOT_API}/storage/${product.img}`} alt="" />
-
-</div>
-))}
-
-
-</div>
 
     </div>
   )

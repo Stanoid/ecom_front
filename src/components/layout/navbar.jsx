@@ -78,10 +78,13 @@ const dispatch = useDispatch();
  
   return (
   <div className='bg-blue-400 py-4 flex justify-between items-center px-2'>
-    <div className='px-4' >
+    <div className='px-4 flex items-center gap-x-2 ' >
     <Link className='text-5xl text-white '  to={'/'}> 
     <BiStoreAlt/>
     </Link>
+    <div className='font-bold text-white text-2xl'>
+      Ecom store
+    </div>
     </div>
 
 

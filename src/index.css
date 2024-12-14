@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+
+.navtab{
+  @apply text-white mx-2 bg-blue-950 px-4 py-2 shadow-md rounded-md
+}
+
+input,textarea{
+  @apply p-2 w-full mt-1 border-blue-400 border-2 rounded-md
+}
+
+form>button{
+  @apply p-2 w-full mt-3 border-blue-400 border-2 rounded-md text-white bg-blue-400
+}
+ 
+.cbtn{
+  @apply p-2 w-full mt-3 border-blue-400 border-2 rounded-md text-white bg-blue-400
+}
+ 
+
+form>h2{ 
+  @apply w-full  text-center text-2xl font-semibold text-blue-600 mb-6
+}
+
+form{ 
+  @apply mx-auto my-20 w-full sm:w-full lg:w-1/2 md:w-3/4 xl:w-1/2 p-8 rounded-md shadow-md 
+}
